@@ -116,7 +116,7 @@ const TaskPage: React.FC = () => {
   const handleUndoDelete = async () => {
     if (deletedTask) {
       const docRef = doc(db, 'tasks', deletedTask.id!);
-      await setDoc(docRef, deletedTask); // Restore task
+      await setDoc(docRef, deletedTask); 
       setTasks([...tasks, deletedTask]);
       setDeletedTask(null);
     }

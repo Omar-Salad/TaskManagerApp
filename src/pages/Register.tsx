@@ -7,7 +7,7 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
-import './Home.css'; // or use a new Auth.css
+import './Home.css'; 
 import { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { createUserWithEmailAndPassword, UserCredential } from 'firebase/auth';
