@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Route, Redirect, RouteProps } from 'react-router-dom';
 import { useEffect, useState, ComponentType } from 'react';
 import { onAuthStateChanged, User } from 'firebase/auth';
