@@ -4,7 +4,8 @@ import { IonReactRouter } from '@ionic/react-router';
 import Home from './pages/Home';
 import Login from './pages/Login'
 import Register from './pages/Register'
-
+import TaskPage from './pages/TaskPage';
+import PrivateRoute from './components/PrivateRoute';
 
 
 /* Core CSS required for Ionic components to work properly */
@@ -23,15 +24,7 @@ import '@ionic/react/css/text-transformation.css';
 import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 
-/**
- * Ionic Dark Mode
- * -----------------------------------------------------
- * For more info, please see:
- * https://ionicframework.com/docs/theming/dark-mode
- */
-
-/* import '@ionic/react/css/palettes/dark.always.css'; */
-/* import '@ionic/react/css/palettes/dark.class.css'; */
+/* Dark mode */
 import '@ionic/react/css/palettes/dark.system.css';
 
 /* Theme variables */
@@ -55,6 +48,11 @@ const App: React.FC = () => (
         <Route exact path="/Register">
           <Register />
         </Route>
+        <Route exact path='./components/PrivateRoute'>
+          <Register />
+        </Route>
+        <PrivateRoute exact path="/TaskPage" component={TaskPage} />
+
       </IonRouterOutlet>
     </IonReactRouter>
   </IonApp>

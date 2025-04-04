@@ -1,14 +1,32 @@
-import { IonButton, IonContent, IonHeader, IonInput, IonPage, IonTitle, IonToolbar , } from '@ionic/react';
+import {
+  IonButton,
+  IonContent,
+  IonHeader,
+  IonInput,
+  IonPage,
+  IonTitle,
+  IonToolbar,
+} from '@ionic/react';
 import './Home.css';
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebaseConfig';
 
-const Home: React.FC = () => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+const Login: React.FC = () => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const history = useHistory();
 
   function loginUser() {
-    console.log(username, password)
+    signInWithEmailAndPassword(auth, username, password)
+      .then((userCredential: { user: unknown; }) => {
+        console.log('Logged in:', userCredential.user);
+        history.push('/TaskPage');
+      })
+      .catch((error: { message: string; }) => {
+        alert('Login failed: ' + error.message);
+      });
   }
 
   return (
@@ -20,22 +38,21 @@ const Home: React.FC = () => {
       </IonHeader>
       <IonContent className="ion-padding">
         <IonInput
-          placeholder="Username?"
-          onIonChange={(e: unknown) => setUsername(e.target.value)}
+          placeholder="Username"
+          onIonChange={(e) => setUsername(e.detail.value!)}
         />
         <IonInput
-          placeholder="Password?"
+          placeholder="Password"
           type="password"
-          onIonChange={(e: unknown) => setPassword(e.target.value)}
+          onIonChange={(e) => setPassword(e.detail.value!)}
         />
         <IonButton onClick={loginUser}>Login</IonButton>
         <p>
-  New here <Link to="/register">Register</Link>
-</p>
-
+          New here? <Link to="/register">Register</Link>
+        </p>
       </IonContent>
     </IonPage>
-  )
-}
+  );
+};
 
-export default Home
+export default Login;
