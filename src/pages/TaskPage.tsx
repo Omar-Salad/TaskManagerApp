@@ -38,6 +38,9 @@ import {
 import { auth, db } from '../firebaseConfig';
 import { useHistory } from 'react-router-dom';
 
+import { Haptics, ImpactStyle } from '@capacitor/haptics';
+import { Toast } from '@capacitor/toast';
+
 interface Task {
   id?: string;
   title: string;
@@ -75,6 +78,14 @@ const TaskPage: React.FC = () => {
     setLoading(false);
   };
 
+  const vibrate = async () => {
+    await Haptics.impact({ style: ImpactStyle.Medium });
+  };
+
+  const showToast = async (message: string) => {
+    await Toast.show({ text: message, duration: 'short' });
+  };
+
   const handleAddTask = async () => {
     if (taskTitle.trim() === '') return;
 
@@ -87,6 +98,8 @@ const TaskPage: React.FC = () => {
     const docRef = await addDoc(collection(db, 'tasks'), newTask);
     setTasks([...tasks, { ...newTask, id: docRef.id }]);
     setTaskTitle('');
+    await vibrate();
+    await showToast('Task added');
   };
 
   const handleTaskToggle = async (index: number) => {
@@ -98,6 +111,8 @@ const TaskPage: React.FC = () => {
     if (task.id) {
       const taskRef = doc(db, 'tasks', task.id);
       await updateDoc(taskRef, { completed: task.completed });
+      await vibrate();
+      await showToast(task.completed ? 'Task completed' : 'Task marked incomplete');
     }
   };
 
@@ -111,14 +126,17 @@ const TaskPage: React.FC = () => {
     setDeletedTask(taskToDelete);
     setTasks(tasks.filter((_, i) => i !== index));
     setShowUndo(true);
+    await vibrate();
+    await showToast('Task deleted');
   };
 
   const handleUndoDelete = async () => {
     if (deletedTask) {
       const docRef = doc(db, 'tasks', deletedTask.id!);
-      await setDoc(docRef, deletedTask); 
+      await setDoc(docRef, deletedTask);
       setTasks([...tasks, deletedTask]);
       setDeletedTask(null);
+      await showToast('Undo successful');
     }
     setShowUndo(false);
   };
@@ -133,6 +151,7 @@ const TaskPage: React.FC = () => {
       }
     }
     setTasks(remainingTasks);
+    await showToast('Completed tasks cleared');
   };
 
   const handleSaveEdit = async (taskId: string, newTitle: string) => {
@@ -148,6 +167,7 @@ const TaskPage: React.FC = () => {
 
     setEditingTaskId(null);
     setEditedTitle('');
+    await showToast('Task updated');
   };
 
   const handleLogout = async () => {
@@ -218,22 +238,21 @@ const TaskPage: React.FC = () => {
                   />
                   {editingTaskId === task.id ? (
                     <>
-                      <IonInput
+                     <IonInput
                         value={editedTitle}
                         onIonChange={(e) => setEditedTitle(e.detail.value!)}
-                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                        onKeyDown={(e: any) => {
-                          if (e.key === 'Enter') {
+                        onKeyDown={(e) => {
+                          const keyEvent = e as React.KeyboardEvent<HTMLIonInputElement>;
+                          if (keyEvent.key === 'Enter') {
                             handleSaveEdit(task.id!, editedTitle);
                           }
                         }}
                       />
+
                       <IonButton
                         fill="clear"
                         color="success"
-                        onClick={() =>
-                          handleSaveEdit(task.id!, editedTitle)
-                        }
+                        onClick={() => handleSaveEdit(task.id!, editedTitle)}
                       >
                         <IonIcon icon={checkmarkOutline} />
                       </IonButton>

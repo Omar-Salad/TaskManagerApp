@@ -13,7 +13,7 @@ const Home: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>My TaskManagerApp!</IonTitle>
+          <IonTitle>TaskManagerApp</IonTitle>
         </IonToolbar>
       </IonHeader>
 

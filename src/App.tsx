@@ -1,11 +1,15 @@
-import { Redirect, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import Home from './pages/Home';
+
 import Login from './pages/Login'
 import Register from './pages/Register'
 import TaskPage from './pages/TaskPage';
 import PrivateRoute from './components/PrivateRoute';
+import Welcome from './pages/Welcome';
+
+
+
 
 
 /* Core CSS required for Ionic components to work properly */
@@ -35,25 +39,20 @@ setupIonicReact();
 const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
-      <IonRouterOutlet>
-        <Route exact path="/home">
-          <Home />
-        </Route>
-        <Route exact path="/Login">
-          <Login />
-        </Route>
-        <Route exact path="/">
-          <Redirect to="/home" />
-        </Route>
-        <Route exact path="/Register">
-          <Register />
-        </Route>
-        <Route exact path='./components/PrivateRoute'>
-          <Register />
-        </Route>
-        <PrivateRoute exact path="/TaskPage" component={TaskPage} />
+    <IonRouterOutlet>
+  <Route exact path="/">
+    <Welcome />
+  
+  </Route>
+  <Route exact path="/login">
+    <Login />
+  </Route>
+  <Route exact path="/register">
+    <Register />
+  </Route>
+  <PrivateRoute exact path="/TaskPage" component={TaskPage} />
+</IonRouterOutlet>
 
-      </IonRouterOutlet>
     </IonReactRouter>
   </IonApp>
 );
