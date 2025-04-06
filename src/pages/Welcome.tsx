@@ -14,14 +14,19 @@ import {
       <IonPage>
         <IonContent>
           <div className="welcome-container">
-            <IonText color="dark">
-              <h1>Welcome</h1>
-              <p>This is a task manager app for your daily productivity.</p>
-            </IonText >
-            <IonButton expand="block" onClick={() => history.push('/login')}>
+          <IonText className="ion-text-center">
+  <h1 className="ion-text-wrap" style={{ fontSize: '2rem' }}>Welcome</h1>
+  <p style={{ fontSize: '1.5rem' }}>
+  This is a task manager app for your daily productivity.
+  </p>
+</IonText>
+
+         
+
+            <IonButton expand="block"  size="large" onClick={() => history.push('/login')}>
               Login
             </IonButton>
-            <IonButton expand="block"  onClick={() => history.push('/register')}>
+            <IonButton expand="block" size="large" onClick={() => history.push('/register')}>
               Sign Up
             </IonButton>
           </div>
